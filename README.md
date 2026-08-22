@@ -1,15 +1,10 @@
 # Dayflow HRMS Frontend
 
-A polished Flask demo frontend for an employee HR management system.
+Frontend application for the Dayflow HRMS project.
 
-## Run locally
+## Project Structure
 
-```powershell
-cd dayflow_hrms_frontend
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-python app.py
-```
-
-Open http://127.0.0.1:5000. Use any email to enter as an employee, or select Admin on the login screen.
+- `app.py` - Application entry point
+- `templates/` - HTML templates
+- `static/` - CSS, JavaScript and static assets
+- `requirements.txt` - Python dependencies
