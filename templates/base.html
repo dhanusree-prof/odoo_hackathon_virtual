@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Dayflow{% endblock %} | HRMS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="{{ url_for('dashboard') }}"><span class="brand-mark">d</span><span>dayflow</span></a>
+      <div class="workspace-label">Workspace</div>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a class="nav-item {% if active_page == 'dashboard' %}active{% endif %}" href="{{ url_for('dashboard') }}"><span class="nav-icon">⌂</span>Overview</a>
+        <a class="nav-item {% if active_page == 'attendance' %}active{% endif %}" href="{{ url_for('attendance') }}"><span class="nav-icon">◷</span>Attendance</a>
+        <a class="nav-item {% if active_page == 'leave' %}active{% endif %}" href="{{ url_for('leave') }}"><span class="nav-icon">▣</span>Leave</a>
+        <a class="nav-item {% if active_page == 'payroll' %}active{% endif %}" href="{{ url_for('payroll') }}"><span class="nav-icon">$</span>Payroll</a>
+      </nav>
+      <div class="sidebar-bottom">
+        <a class="nav-item {% if active_page == 'profile' %}active{% endif %}" href="{{ url_for('profile') }}"><span class="nav-icon">◉</span>My profile</a>
+        <a class="nav-item" href="#"><span class="nav-icon">?</span>Help center</a>
+        <div class="sidebar-user"><span class="avatar">{{ employee.initials }}</span><div><strong>{{ employee.name }}</strong><small>{{ employee.role }}</small></div><a class="logout-link" href="{{ url_for('logout') }}" title="Sign out">Logout ↗</a></div>
+      </div>
+    </aside>
+    <main class="main-content">
+      <header class="topbar"><button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation">☰</button><div class="breadcrumb">Workspace <span>/</span> <strong>{% block breadcrumb %}Overview{% endblock %}</strong></div><div class="top-actions"><button class="icon-button" aria-label="Search">⌕</button><button class="icon-button notification" aria-label="Notifications">♧<i></i></button><span class="avatar small">{{ employee.initials }}</span></div></header>
+      <section class="page-content">{% with messages = get_flashed_messages(with_categories=true) %}{% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}{% endwith %}{% block content %}{% endblock %}</section>
+    </main>
+  </div>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
