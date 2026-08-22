@@ -3,11 +3,16 @@ from fastapi import APIRouter, Depends
 from app.utils.dependencies import DbSession
 from app.models.employee import Employee
 from app.models.user import User
-from app.schemas.payroll import PayrollCreate, PayrollResponse
+from app.schemas.payroll import PayrollCreate, PayrollResponse, PayrollStatusUpdate
 from app.services import payroll
 from app.utils.dependencies import current_user, require_roles
 
 router = APIRouter()
+
+
+@router.get("/admin/all", response_model=list[PayrollResponse])
+def list_all_payroll(user: Annotated[User, Depends(require_roles("admin", "hr"))], db: DbSession):
+    return payroll.list_all(db)
 
 
 @router.get("/", response_model=list[PayrollResponse])
@@ -23,3 +28,8 @@ def create_payroll(employee_id: int, data: PayrollCreate, user: Annotated[User, 
         from fastapi import HTTPException
         raise HTTPException(status_code=404, detail="Employee not found")
     return payroll.create_record(employee, data, db)
+
+
+@router.patch("/{payroll_id}/status", response_model=PayrollResponse)
+def update_payroll_status(payroll_id: int, data: PayrollStatusUpdate, user: Annotated[User, Depends(require_roles("admin", "hr"))], db: DbSession):
+    return payroll.update_status(payroll_id, data.status, db)

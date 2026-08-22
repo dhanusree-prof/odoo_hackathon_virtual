@@ -17,3 +17,19 @@ def create_request(employee: Employee, data: LeaveCreate, db: Session):
     db.commit()
     db.refresh(request)
     return request
+
+
+def list_all(db: Session):
+    return db.query(LeaveRequest).order_by(LeaveRequest.created_at.desc()).all()
+
+
+def update_status(request_id: int, status: str, db: Session):
+    if status not in {"approved", "rejected", "pending"}:
+        raise HTTPException(status_code=400, detail="status must be approved, rejected, or pending")
+    request = db.get(LeaveRequest, request_id)
+    if not request:
+        raise HTTPException(status_code=404, detail="Leave request not found")
+    request.status = status
+    db.commit()
+    db.refresh(request)
+    return request

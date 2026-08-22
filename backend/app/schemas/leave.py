@@ -14,3 +14,7 @@ class LeaveResponse(LeaveCreate):
     employee_id: int
     status: str
     created_at: datetime
+
+
+class LeaveStatusUpdate(BaseModel):
+    status: str

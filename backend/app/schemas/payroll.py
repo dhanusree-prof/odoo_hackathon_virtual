@@ -14,3 +14,7 @@ class PayrollResponse(PayrollCreate):
     id: int
     employee_id: int
     status: str
+
+
+class PayrollStatusUpdate(BaseModel):
+    status: str
